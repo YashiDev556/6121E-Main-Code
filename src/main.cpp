@@ -1,16 +1,29 @@
 #include "main.h"
 
+// //robot measurements
+// const static double WHEEL_DIAMETER = 4.125;
+// const static double GEAR_RATIO = 36.0 / 60.0;
+// const static double TICKS_PER_INCH = 900.0 / (M_PI * WHEEL_DIAMETER * GEAR_RATIO); //900 ticks per revolution
+//
+// const static double CHASSIS_WIDTH = 12.0; //lenght from wheel to wheel on opposite side
+// const static double TICKS_PER_DEGREE = (2.5 * CHASSIS_WIDTH) / (WHEEL_DIAMETER * GEAR_RATIO); //only for turning not arc
+//
+//
+// //field measurement constants
+// const static double GOAL_RUSH = 67.5;
+
+
 /**
  * A callback function for LLEMU's center button.
  *
  * When this callback is fired, it will toggle line 2 of the LCD text between
  * "I was pressed!" and nothing.
  */
-void on_center_button() {
+void on_right_button() {
 	static bool pressed = false;
 	pressed = !pressed;
 	if (pressed) {
-		pros::lcd::set_text(2, "I was pressed!");
+		pros::lcd::set_text(2, "This is an example of auton selection....");
 	} else {
 		pros::lcd::clear_line(2);
 	}
@@ -24,9 +37,31 @@ void on_center_button() {
  */
 void initialize() {
 	pros::lcd::initialize();
-	pros::lcd::set_text(1, "The Sun has risen.");
+	pros::lcd::set_text(1, "Long live 6121E! Long live the Executive Council!");
 
-	pros::lcd::register_btn1_cb(on_center_button);
+
+//pros::lcd::register_btn0_cb(on_right_button); means left button
+//pros::lcd::register_btn1_cb(on_right_button); means center button
+//pros::lcd::register_btn2_cb(on_right_button); means right button
+
+	pros::lcd::register_btn2_cb(on_right_button);
+
+	driveLeftBack.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
+	driveLeftFront.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
+	driveRightBack.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
+	driveRightFront.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
+
+
+
+	//make sure to delete or comment out this "autonomous()" line during competition
+	//also make sure to add gyro functionality
+
+	//autonomous();
+
+
+
+
+
 }
 
 /**
@@ -45,7 +80,16 @@ void disabled() {}
  * This task will exit when the robot is enabled and autonomous or opcontrol
  * starts.
  */
-void competition_initialize() {}
+
+ //basically the competition initialize function is for an autonomous selector
+ //probably can do this with the bumper switches or software buttons
+
+void competition_initialize() {
+
+
+
+
+}
 
 /**
  * Runs the user autonomous code. This function will be started in its own task
@@ -58,7 +102,19 @@ void competition_initialize() {}
  * will be stopped. Re-enabling the robot will restart the task, not re-start it
  * from where it left off.
  */
-void autonomous() {}
+
+
+
+
+
+void autonomous() {
+
+	//redLeftCorner();
+	redRightCorner();
+	//blueLeftCorner();
+	//blueRightCorner();
+
+}
 
 /**
  * Runs the operator control code. This function will be started in its own task
@@ -81,7 +137,12 @@ void opcontrol() {
 
 		//control the drive
 		setDriveMotors();
-		//control intake
+
+		if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_X)) {
+			reverseDriveMotors();
+		}
+		//control mogo lift
+		setMogoMotors();
 		//control lift
 		pros::delay(10);
 	}
