@@ -39,7 +39,7 @@ double rightPower = 0.0;
 
 
 //constants for setting voltage
-const int BRAKE_TIME = 50;
+const int BRAKE_TIME = 100; //just trying out a new brake time - original was 50
 
 //weights for straight drive pid
 const double STRAIGHT_KP = 0.4;

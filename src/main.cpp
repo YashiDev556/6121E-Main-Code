@@ -37,7 +37,7 @@ void on_right_button() {
  */
 void initialize() {
 	pros::lcd::initialize();
-	pros::lcd::set_text(1, "Long live 6121E! Long live the Executive Council!");
+	pros::lcd::set_text(1, "Team_6121E - Project: Bleeding Edge");
 
 
 //pros::lcd::register_btn0_cb(on_right_button); means left button
@@ -56,7 +56,7 @@ void initialize() {
 	//make sure to delete or comment out this "autonomous()" line during competition
 	//also make sure to add gyro functionality
 
-	//autonomous();
+	autonomous();
 
 
 
@@ -110,9 +110,11 @@ void competition_initialize() {
 void autonomous() {
 
 	//redLeftCorner();
-	redRightCorner();
+	//redRightCorner();
 	//blueLeftCorner();
 	//blueRightCorner();
+
+	driveTest();
 
 }
 
