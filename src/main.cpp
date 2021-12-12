@@ -39,6 +39,7 @@ void initialize() {
 	pros::lcd::initialize();
 	pros::lcd::set_text(1, "Team_6121E - Project: Bleeding Edge");
 
+	controller.clear();
 
 //pros::lcd::register_btn0_cb(on_right_button); means left button
 //pros::lcd::register_btn1_cb(on_right_button); means center button

@@ -2,9 +2,9 @@
 
 void driveTest() {
   straightPID(26.0);
-  turnPID(90.0);
+  turnPID(-90.0);
   straightPID(24.0);
-  //turnPID(-180.0);
+  turnPID(-180.0);
   //arcPID(12.0, 135.0);
   //arcPID(-9.0, -135.0);
   //turnPID(-180.0);
@@ -13,7 +13,7 @@ void driveTest() {
 
 void redLeftCorner()
 {
-  
+
 }
 
 void redRightCorner()

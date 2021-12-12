@@ -115,14 +115,18 @@ double avgDriveEncoderValue()
 
 double leftDriveEncoderValue()
 {
-  return (fabs(driveLeftFront.get_position()) +
-          fabs(driveLeftBack.get_position())) / 2;
+  // return (fabs(driveLeftFront.get_position()) +
+  //         fabs(driveLeftBack.get_position())) / 2;
+  return (driveLeftFront.get_position() +
+          driveLeftBack.get_position()) / 2;
 }
 
 double rightDriveEncoderValue()
 {
-  return (fabs(driveRightFront.get_position()) +
-          fabs(driveRightBack.get_position())) / 2;
+  // return (fabs(driveRightFront.get_position()) +
+  //         fabs(driveRightBack.get_position())) / 2;
+  return (driveRightFront.get_position() +
+          driveRightBack.get_position()) / 2;
 }
 
 
@@ -263,7 +267,10 @@ void arcPID(double r_inches, double degrees) {
       rightPower = -maxArcVoltage;
     }
     setDrive(leftPower, rightPower);
-    controller.set_text(1, 1, "ARC: " + std::to_string(leftPower) + " | " + std::to_string(rightPower));
+    // controller.clear();
+    controller.set_text(0, 1, "ARC: " + std::to_string((int)(leftPower)) + " | " + std::to_string((int)(rightPower)));
+    pros::lcd::set_text(1, "Left_E: " + std::to_string((int)(leftError)));
+    pros::lcd::set_text(2, "Right_E: " + std::to_string((int)(rightError)));
 
     pros::delay(10);
   }
@@ -305,7 +312,10 @@ void turnPID(double degrees) {
       rightPower = -maxTurnVoltage;
     }
     setDrive(leftPower, rightPower);
-        controller.set_text(1, 1, "TRN: " + std::to_string(leftPower) + " | " + std::to_string(rightPower));
+    // controller.clear();
+    controller.set_text(0, 1, "TRN: " + std::to_string((int)(leftPower)) + " | " + std::to_string((int)(rightPower)));
+    pros::lcd::set_text(1, "Left_E: " + std::to_string((int)(leftError)));
+    pros::lcd::set_text(2, "Right_E: " + std::to_string((int)(rightError)));
 
     pros::delay(10);
   }
@@ -347,7 +357,10 @@ void straightPID(double inches) {
       rightPower = -maxStraightVoltage;
     }
     setDrive(leftPower, rightPower);
-        controller.set_text(1, 1, "STR: " + std::to_string(leftPower) + " | " + std::to_string(rightPower));
+    // controller.clear();
+    controller.set_text(0, 1, "STR: " + std::to_string((int)(leftPower)) + " | " + std::to_string((int)(rightPower)));
+    pros::lcd::set_text(1, "Left_E: " + std::to_string((int)(leftError)));
+    pros::lcd::set_text(2, "Right_E: " + std::to_string((int)(rightError)));
 
     pros::delay(10);
   }
