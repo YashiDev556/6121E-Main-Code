@@ -263,7 +263,7 @@ void arcPID(double r_inches, double degrees) {
       rightPower = -maxArcVoltage;
     }
     setDrive(leftPower, rightPower);
-    controller.set_text(1, 1, "ARC:" + std::to_string(leftPower) + "|" + std::to_string(rightPower));
+    controller.set_text(1, 1, "ARC: " + std::to_string(leftPower) + " | " + std::to_string(rightPower));
 
     pros::delay(10);
   }
@@ -305,7 +305,7 @@ void turnPID(double degrees) {
       rightPower = -maxTurnVoltage;
     }
     setDrive(leftPower, rightPower);
-        controller.set_text(1, 1, "TRN:" + std::to_string(leftPower) + "|" + std::to_string(rightPower));
+        controller.set_text(1, 1, "TRN: " + std::to_string(leftPower) + " | " + std::to_string(rightPower));
 
     pros::delay(10);
   }
@@ -347,7 +347,7 @@ void straightPID(double inches) {
       rightPower = -maxStraightVoltage;
     }
     setDrive(leftPower, rightPower);
-        controller.set_text(1, 1, "STR:" + std::to_string(leftPower) + "|" + std::to_string(rightPower));
+        controller.set_text(1, 1, "STR: " + std::to_string(leftPower) + " | " + std::to_string(rightPower));
 
     pros::delay(10);
   }
