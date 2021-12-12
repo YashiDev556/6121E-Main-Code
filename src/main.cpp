@@ -133,7 +133,7 @@ void autonomous() {
  */
 void opcontrol() {
 	//controller.clear();
-	controller.set_text(1, 4, "-D-----DRIVE------");
+	// controller.set_text(1, 4, "-D-----DRIVE------");
 	while(true)
 	{
 
