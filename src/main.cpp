@@ -145,7 +145,14 @@ void opcontrol() {
 			reverseDriveMotors();
 		}
 		//control mogo lift
-		setMogoMotors();
+		// setMogoMotors();
+		if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_L1)) {
+			setMogoAngle(45);
+
+		} else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_L2)) {
+			setMogoAngle(0);
+		}
+
 		//control lift
 		pros::delay(10);
 	}
