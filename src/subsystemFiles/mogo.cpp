@@ -19,7 +19,7 @@ void setMogoTask(int id, double p1, double p2) {
   }
 }
 
-void autonMogoTask() {
+void autonMogoTask(void *parameter) {
   initMogo();
 
   while (true) {

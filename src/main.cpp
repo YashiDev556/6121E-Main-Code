@@ -103,7 +103,7 @@ void competition_initialize() {
 
 
 void autonomous() {
-
+	
 	pros::Task auton_choice(autonChoice);
 	pros::Task auton_drive_task(autonDriveTask);
 	pros::Task auton_mogo_task(autonMogoTask);

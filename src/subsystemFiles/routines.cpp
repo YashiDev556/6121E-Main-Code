@@ -6,13 +6,13 @@ void autonChoice(void *parameter) {
 }
 
 void multiTest() {
-  setDriveTask(4, 12.0);
+  setDriveTask(1, 12.0);
   pros::delay(20);
   setMogoTask(1, 45.0);
   pros::delay(1500);
-  setDriveTask(5, -90);
+  setDriveTask(2, -90);
   pros::delay(1000);
-  setDriveTask(4, -18.0);
+  setDriveTask(1, -18.0);
   setMogoTask(1, 15.0);
   pros::delay(1000);
   setMogoTask(1, 90);
