@@ -38,7 +38,7 @@ void autonMogoTask(void *parameter) {
 //lift functions
 void setMogo(int power) {
   mogoLeft = power;
-  mogoRight = power;
+  // mogoRight = power;
 }
 
 void setMogoMotors() {
@@ -51,7 +51,7 @@ void setMogoMotors() {
 
 void initMogo() {
   mogoLeft.tare_position();
-  mogoRight.tare_position();
+  // mogoRight.tare_position();
 
 
 }
