@@ -275,11 +275,11 @@ void resetPIDVars(int left_units, int right_units) {
 
 //AUTONOMOUS CONTROL FUNCTIONS
 
-void translate(int units, int voltage)
+void translate(double units, int voltage)
 {
   //define a direction based on units provided
   int direction = abs(units) / units; //either 1 or -1
-
+  units = units * TICKS_PER_INCH;
   //reset the motor encoders
   resetDriveEncoders();
   //drive forward until units are reached
