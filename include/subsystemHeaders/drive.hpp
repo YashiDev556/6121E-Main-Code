@@ -11,6 +11,9 @@ double avgDriveEncoderValue();
 double leftDriveEncoderValue();
 double rightDriveEncoderValue();
 
+void setDriveTask(int id, double p1=0, double p2=0);
+void autonDriveTask(void *);
+
 bool errorCheck(int d, int max);
 
 //Conversions

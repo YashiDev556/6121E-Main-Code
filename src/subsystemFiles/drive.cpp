@@ -35,6 +35,86 @@ double rightPower = 0.0;
 
 
 
+//Vars for multitasking
+int driveTaskID = 0;
+
+/* DRIVE TASK ID KEY:
+   0 - idle / transitioning
+   1 - constant straight drive
+   2 - constant turn
+   3 - sqrt straight drive
+   4 - PID straight drive
+   5 - PID turn
+   6 - PID arc drive
+*/
+
+int driveTaskInches = 0;
+int driveTaskDegrees = 0;
+int driveTaskRadius = 0;
+
+void setDriveTask(int id, double p1, double p2) {
+  driveTaskID = id;
+  driveTaskInches = 0;
+  driveTaskDegrees = 0;
+  driveTaskRadius = 0;
+
+  switch (driveTaskID) {
+    case 0:
+      break;
+    case 1:
+      driveTaskInches = p1;
+      break;
+    case 2:
+      driveTaskDegrees = p1;
+      break;
+    case 3:
+      driveTaskInches = p1;
+      break;
+    case 4:
+      driveTaskInches = p1;
+      break;
+    case 5:
+      driveTaskDegrees = p1;
+      break;
+    case 6:
+      driveTaskRadius = p1;
+      driveTaskDegrees = p2;
+      break;
+  }
+}
+
+void autonDriveTask(void *parameter) {
+  while (true) {
+    switch (driveTaskID) {
+      case 0:
+        controller.set_text(0, 1, "IDLE...");
+        break;
+      case 1:
+        translate(driveTaskInches, maxStraightVoltage);
+        break;
+      case 2:
+        turnPID(driveTaskDegrees);
+        break;
+      case 3:
+        translate(driveTaskInches, maxStraightVoltage); //change later
+        break;
+      case 4:
+        straightPID(driveTaskInches);
+        break;
+      case 5:
+        turnPID(driveTaskDegrees);
+        break;
+      case 6:
+        arcPID(driveTaskRadius, driveTaskDegrees);
+        break;
+      }
+    }
+    driveTaskID = 0;
+}
+
+
+
+
 
 
 

@@ -1,5 +1,6 @@
 #include "main.h"
 
+
 // //robot measurements
 // const static double WHEEL_DIAMETER = 4.125;
 // const static double GEAR_RATIO = 36.0 / 60.0;
@@ -53,16 +54,9 @@ void initialize() {
 	driveRightFront.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
 
 
-
+	autonomous();
 	//make sure to delete or comment out this "autonomous()" line during competition
 	//also make sure to add gyro functionality
-
-	autonomous();
-
-
-
-
-
 }
 
 /**
@@ -110,12 +104,9 @@ void competition_initialize() {
 
 void autonomous() {
 
-	//redLeftCorner();
-	//redRightCorner();
-	//blueLeftCorner();
-	//blueRightCorner();
-
-	driveTest();
+	pros::Task auton_choice(autonChoice);
+	pros::Task auton_drive_task(autonDriveTask);
+	// pros::Task auton_mogo_task(autonMogoTask);
 
 }
 

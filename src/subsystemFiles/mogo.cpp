@@ -3,6 +3,38 @@
 
 const double ratio = 7.0;
 
+int mogoTaskID = 0;
+int mogoTaskDegrees = 0;
+
+//multitask FUNCTIONS
+void setMogoTask(int id, double p1, double p2) {
+  mogoTaskID = id;
+  mogoTaskDegrees = 0;
+  switch (mogoTaskID) {
+    case 0:
+      break;
+    case 1:
+      mogoTaskDegrees = p1;
+      break;
+  }
+}
+
+void autonMogoTask() {
+  initMogo();
+
+  while (true) {
+    switch (mogoTaskID) {
+      case 0:
+        break;
+      case 1:
+        setMogoAngle(mogoTaskDegrees);
+        break;
+      }
+  }
+  mogoTaskID = 0;
+}
+
+
 //lift functions
 void setMogo(int power) {
   mogoLeft = power;
