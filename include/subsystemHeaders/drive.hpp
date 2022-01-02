@@ -27,7 +27,7 @@ double ticksToInches(double ticks);
 void setDriveMotors();
 
 //AUTONOMOUS CONTROL FUNCTIONS
-void translate(int units, int voltage);
+void translate(double units, int voltage);
 void rotate(int degrees);
 void straightPID(double inches);
 void turnPID(double degrees);
