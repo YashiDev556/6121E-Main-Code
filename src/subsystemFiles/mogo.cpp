@@ -1,7 +1,7 @@
 #include "main.h"
 
 
-const double ratio = 7.0;
+const double ratio = 12.0 / 84.0;
 
 int mogoTaskID = 0;
 int mogoTaskDegrees = 0;
@@ -60,11 +60,13 @@ double mogoEncoderValue() {
   return mogoLeft.get_position();
 }
 
-void setMogoAngle(double deg) {
-  double target = 900 * (90 - deg) / 360;
-  int dir = fabs(mogoEncoderValue() - target) / (target - mogoEncoderValue());
+void setMogoAngle(double theta_final) {
+  double target = (900.0/360.0) * (theta_final/ratio);
+  double dTheta = target - mogoEncoderValue();
 
-  const int mV = 127;
+  int dir = fabs(dTheta) / (dTheta);
+
+  const int mV = 100;
 
   if (dir > 0) {
     while (mogoEncoderValue() <= target) {
