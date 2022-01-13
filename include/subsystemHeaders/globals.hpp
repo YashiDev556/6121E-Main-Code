@@ -11,10 +11,12 @@ extern pros::Motor driveRightFront;
 
 //mogo
 extern pros::Motor mogoLeft;
-extern pros::Motor mogoRight;
+// extern pros::Motor mogoRight;
 
 //lift
 extern pros::Motor lift;
+extern pros::Motor conveyor;
+
 
 //CONTROLLER
 extern  pros::Controller controller;

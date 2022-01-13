@@ -80,6 +80,8 @@ void setDriveTask(int id, double p1, double p2) {
       driveTaskRadius = p1;
       driveTaskDegrees = p2;
       break;
+    case 7:
+      driveTaskInches = p1;
   }
 }
 
@@ -106,6 +108,9 @@ void autonDriveTask(void *parameter) {
         break;
       case 6:
         arcPID(driveTaskRadius, driveTaskDegrees);
+        break;
+      case 7:
+        straightTrap(driveTaskInches);
         break;
       }
     }
@@ -167,48 +172,40 @@ double ticksToInches(double ticks) {
    return ticks/TICKS_PER_INCH;
 }
 
-
-void setDrive(int left, int right)
-{
+void setDrive(int left, int right) {
   driveLeftBack = left;
   driveLeftFront = left;
   driveRightBack = right;
   driveRightFront = right;
 }
 
-
-void resetDriveEncoders()
-{
+void resetDriveEncoders() {
   driveLeftBack.tare_position();
   driveLeftFront.tare_position();
   driveRightBack.tare_position();
   driveRightFront.tare_position();
 }
 
-double avgDriveEncoderValue()
-{
+double avgDriveEncoderValue() {
   return (fabs(driveLeftFront.get_position()) +
           fabs(driveLeftBack.get_position()) +
           fabs(driveRightFront.get_position()) +
           fabs(driveRightBack.get_position())) / 4;
 }
 
-double leftDriveEncoderValue()
-{
+double leftDriveEncoderValue() {
   // return (fabs(driveLeftFront.get_position()) +
   //         fabs(driveLeftBack.get_position())) / 2;
   return (driveLeftFront.get_position() +
           driveLeftBack.get_position()) / 2;
 }
 
-double rightDriveEncoderValue()
-{
+double rightDriveEncoderValue() {
   // return (fabs(driveRightFront.get_position()) +
   //         fabs(driveRightBack.get_position())) / 2;
   return (driveRightFront.get_position() +
           driveRightBack.get_position()) / 2;
 }
-
 
 bool errorCheck(int d, int max) {
 
@@ -232,8 +229,7 @@ bool errorCheck(int d, int max) {
 }
 
 //DRIVER CONTROL FUNCTIONS
-void setDriveMotors()
-{
+void setDriveMotors() {
   int leftJoystick = controller.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y);
   int rightJoystick = controller.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_Y);
 
@@ -275,8 +271,7 @@ void resetPIDVars(int left_units, int right_units) {
 
 //AUTONOMOUS CONTROL FUNCTIONS
 
-void translate(double units, int voltage)
-{
+void translate(double units, int voltage) {
   //define a direction based on units provided
   int direction = abs(units) / units; //either 1 or -1
   units = units * TICKS_PER_INCH;
@@ -449,4 +444,35 @@ void straightPID(double inches) {
   pros::delay(BRAKE_TIME);
   //set drive back to neutral
   setDrive(0,0);
+}
+
+void straightTrap(double inches) {
+  int direction = abs(inches) / inches; //either 1 or -1
+  resetPIDVars(inches*TICKS_PER_INCH, inches*TICKS_PER_INCH);
+
+  int INTL_VEL = 0;
+  int MAX_VEL = 127;
+  int TARGET_BUFFER = 900; //num of units (each side) for acceleration and deceleration
+
+  while (fabs(avgDriveEncoderValue()) < TARGET_BUFFER && fabs(avgDriveEncoderValue()) <= fabs(rightTarget + leftTarget)/4) {
+    int cv = INTL_VEL + (int)(fabs(avgDriveEncoderValue())*(MAX_VEL - INTL_VEL)/TARGET_BUFFER);
+    setDrive(cv * direction, cv * direction);
+    pros::delay(10);
+  }
+  while (fabs(avgDriveEncoderValue()) <= fabs(rightTarget + leftTarget)/2 - TARGET_BUFFER) {
+    int cv = MAX_VEL;
+    setDrive(cv * direction, cv * direction);
+    pros::delay(10);
+  }
+  while (fabs(avgDriveEncoderValue()) < fabs(rightTarget + leftTarget)/2) {
+    double e = fabs(avgDriveEncoderValue()) - fabs(rightTarget + leftTarget)/2;
+    int cv = (int)((e / TARGET_BUFFER) * (MAX_VEL - INTL_VEL));
+    setDrive(cv * direction, cv * direction);
+    pros::delay(10);
+  }
+
+  setDrive(-10 * direction, -10 * direction);
+  pros::delay(BRAKE_TIME);
+  setDrive(0, 0);
+
 }

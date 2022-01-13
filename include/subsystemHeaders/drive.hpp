@@ -32,3 +32,4 @@ void rotate(int degrees);
 void straightPID(double inches);
 void turnPID(double degrees);
 void arcPID(double r_inches, double degrees);
+void straightTrap(double inches);
