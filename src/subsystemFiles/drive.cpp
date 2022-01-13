@@ -82,6 +82,7 @@ void setDriveTask(int id, double p1, double p2) {
       break;
     case 7:
       driveTaskInches = p1;
+      break;
   }
 }
 
