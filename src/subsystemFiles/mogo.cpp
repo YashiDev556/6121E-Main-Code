@@ -1,93 +1,76 @@
 #include "main.h"
 
-
-const double ratio = 12.0 / 84.0;
-
-int mogoTaskID = 0;
-int mogoTaskDegrees = 0;
-
-//multitask FUNCTIONS
-void setMogoTask(int id, double p1, double p2) {
-  mogoTaskID = id;
-  mogoTaskDegrees = 0;
-  switch (mogoTaskID) {
-    case 0:
-      break;
-    case 1:
-      mogoTaskDegrees = p1;
-      break;
-  }
-}
-
-void autonMogoTask(void *parameter) {
-  initMogo();
-
-  while (true) {
-    switch (mogoTaskID) {
-      case 0:
-        break;
-      case 1:
-        setMogoAngle(mogoTaskDegrees);
-        break;
-      }
-  }
-  mogoTaskID = 0;
-}
+bool powerCompensate = false;
 
 
 //lift functions
-void setMogo(int power) {
-  mogoLeft = power;
-  // mogoRight = power;
+void setMogo(int power)
+{
+  mogo = power;
 }
 
-void setMogoMotors() {
+void setMogoMotors()
+{
 
   //bottom puts down, upper picks up
-  int mogoPower = 127 * (controller.get_digital(pros::E_CONTROLLER_DIGITAL_L2) - controller.get_digital(pros::E_CONTROLLER_DIGITAL_L1));
+  int mogoPower = 127 * (controller.get_digital(pros::E_CONTROLLER_DIGITAL_L1) - controller.get_digital(pros::E_CONTROLLER_DIGITAL_L2));
+
+  if(controller.get_digital(pros::E_CONTROLLER_DIGITAL_B))
+    powerCompensate = !powerCompensate;
+
+
+
+  // if(powerCompensate)
+  //   controller.set_text(0, 7, "C");
+  // else
+  //   controller.set_text(0, 7, "N");
+
+
+  if(abs(mogoPower) < 127 && !powerCompensate)
+    mogoPower = 0;
+  else if(abs(mogoPower) < 127 && powerCompensate)
+    mogoPower = 20;
+
   setMogo(mogoPower);
 
-}
-
-void initMogo() {
-  mogoLeft.tare_position();
-  // mogoRight.tare_position();
-
 
 }
 
-double mogoEncoderValue() {
-  return mogoLeft.get_position();
+
+void resetMogoEncoders()
+{
+  mogo.tare_position();
 }
 
-void setMogoAngle(double theta_final) {
-  double target = (900.0/360.0) * (theta_final/ratio);
-  double dTheta = target - mogoEncoderValue();
 
-  int dir = fabs(dTheta) / (dTheta);
+double mogoEncoderValue()
+{
+  return (fabs(mogo.get_position()));
+}
 
-  const int mV = 100;
 
-  if (dir > 0) {
-    while (mogoEncoderValue() <= target) {
-      setMogo(mV);
-      pros::delay(10);
-    }
+void mogoAuton(int units, int voltage) 
+{
+//define a direction based on units provided
+  int direction = abs(units) / units; //either 1 or -1
 
-    setMogo(-10);
-    pros::delay(20);
-    setMogo(0);
+  //reset the motor encoders
+  resetMogoEncoders();
 
-  } else if (dir < 0) {
-    while (mogoEncoderValue() >= target) {
-      setMogo(-mV);
-      pros::delay(10);
-    }
 
-    setMogo(10);
-    pros::delay(20);
-    setMogo(0);
 
+  //drive forward until units are reached
+  while(mogoEncoderValue() < abs(units))
+  {
+    setMogo(voltage * direction);
+    pros::delay(10);
   }
-
+  //brief brake
+  setMogo(-10 * direction);
+  pros::delay(20);
+  //set drive back to neutral
+  setMogo(0);
 }
+
+
+
