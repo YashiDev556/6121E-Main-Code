@@ -2,10 +2,14 @@
 
 void autonChoice(void *);
 
-void driveTest();
 void multiTest();
 
-void redLeftCorner();
-void redRightCorner();
-void blueLeftCorner();
-void blueRightCorner();
+void leftWinPoint();
+void rightWinPoint();
+
+void rightRush();
+void leftRush();
+
+
+void skillsAuton();
+

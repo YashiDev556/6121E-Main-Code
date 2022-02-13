@@ -83,6 +83,7 @@ void opcontrol(void);
 #include "subsystemHeaders/mogo.hpp"
 #include "subsystemHeaders/intake.hpp"
 #include "subsystemHeaders/routines.hpp"
+#include "subsystemHeaders/claw.hpp"
 
 
 //#include <iostream>

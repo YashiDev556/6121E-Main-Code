@@ -10,13 +10,13 @@ extern pros::Motor driveRightBack;
 extern pros::Motor driveRightFront;
 
 //mogo
-extern pros::Motor mogoLeft;
-// extern pros::Motor mogoRight;
+extern pros::Motor mogo;
 
-//lift
+//intake
 extern pros::Motor lift;
-extern pros::Motor conveyor;
 
+//claw
+extern pros::Motor claw;
 
 //CONTROLLER
 extern  pros::Controller controller;

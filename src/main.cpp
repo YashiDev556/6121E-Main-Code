@@ -1,6 +1,5 @@
 #include "main.h"
 
-
 // //robot measurements
 // const static double WHEEL_DIAMETER = 4.125;
 // const static double GEAR_RATIO = 36.0 / 60.0;
@@ -38,9 +37,9 @@ void on_right_button() {
  */
 void initialize() {
 	pros::lcd::initialize();
-	pros::lcd::set_text(1, "Team_6121E - Project: Bleeding Edge");
+	//pros::lcd::set_text(1, "Team_6121E - Project: Stable");
 
-	controller.clear();
+	//controller.clear();
 
 //pros::lcd::register_btn0_cb(on_right_button); means left button
 //pros::lcd::register_btn1_cb(on_right_button); means center button
@@ -52,12 +51,22 @@ void initialize() {
 	driveLeftFront.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
 	driveRightBack.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
 	driveRightFront.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
-	mogoLeft.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
+
+	lift.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
+	claw.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
+
+	mogo.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
 
 
-	autonomous();
-	//make sure to delete or comment out this "autonomous()" line during competition
-	//also make sure to add gyro functionality
+
+
+	//make sure to delete or comment out this "autonomous()" line during competition or else jank stuff might happen!
+    //autonomous();
+	opcontrol();
+
+
+
+
 }
 
 /**
@@ -85,6 +94,7 @@ void competition_initialize() {
 
 
 
+
 }
 
 /**
@@ -99,16 +109,17 @@ void competition_initialize() {
  * from where it left off.
  */
 
-
-
-
+//I think that this will be run automatically during the competition
+//probably can just switch autonomouses manually
 
 void autonomous() {
 
-	pros::Task auton_choice(autonChoice);
-	// pros::Task auton_drive_task(autonDriveTask);
-	// pros::Task auton_mogo_task(autonMogoTask);
+	//leftWinPoint();
+	//leftRush();
+	//rightWinPoint();
+	rightRush();
 
+	//skillsAuton();
 }
 
 /**
@@ -127,6 +138,10 @@ void autonomous() {
 void opcontrol() {
 	//controller.clear();
 	// controller.set_text(1, 4, "-D-----DRIVE------");
+
+	controller.set_text(0, 1, "D");
+	//controller.set_text(0, 7, "N");
+
 	while(true)
 	{
 
@@ -137,15 +152,14 @@ void opcontrol() {
 			reverseDriveMotors();
 		}
 		//control mogo lift
-		// setMogoMotors();
-		if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_L1)) {
-			setMogoAngle(60);
+		setMogoMotors();
+		//control intake
+		setLiftMotors();
+		//control claw
+		setClawMotors();
 
-		} else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_L2)) {
-			setMogoAngle(90);
-		}
 
-		//control lift
+		//add a delay in the code so that the motors are in sync with program
 		pros::delay(10);
 	}
 
