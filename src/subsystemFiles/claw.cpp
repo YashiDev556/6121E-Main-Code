@@ -1,7 +1,7 @@
 #include "main.h"
 
-static const int UP_THRESH = -30;
-static const int DOWN_THRESH = -505;
+static const int UP_CLAW_THRESH = -30;
+static const int DOWN_CLAW_THRESH = -505;
 static const int CLAW_ERROR_BUFFER = 20;
 
 static bool clampDown = false; //false for open
@@ -21,13 +21,13 @@ void setClawMotors()
 
   // int clawPower = 127 * (controller.get_digital(pros::E_CONTROLLER_DIGITAL_Y) - controller.get_digital(pros::E_CONTROLLER_DIGITAL_A));
   // if (clawPower > 0) {
-  //   if (claw.get_position() < UP_THRESH) {
+  //   if (claw.get_position() < UP_CLAW_THRESH) {
   //     setClaw(clawPower);
   //   } else {
   //     setClaw(-10);
   //   }
   // } else if (clawPower < 0) {
-  //   if (claw.get_position() > DOWN_THRESH) {
+  //   if (claw.get_position() > DOWN_CLAW_THRESH) {
   //     setClaw(clawPower);
   //   } else {
   //     setClaw(10);
@@ -44,20 +44,20 @@ void setClawMotors()
   }
 
   if (clampDown) {
-    if (fabs(claw.get_position() - DOWN_THRESH) < CLAW_ERROR_BUFFER) {
+    if (fabs(claw.get_position() - DOWN_CLAW_THRESH) < CLAW_ERROR_BUFFER) {
       setClaw(0);
-    } else if (claw.get_position() > DOWN_THRESH) {
-      setClaw(-60);
+    } else if (claw.get_position() > DOWN_CLAW_THRESH) {
+      setClaw(-127);
     } else {
       setClaw(10);
     }
   } else {
-    if (fabs(claw.get_position() - UP_THRESH) < CLAW_ERROR_BUFFER) {
+    if (fabs(claw.get_position() - UP_CLAW_THRESH) < CLAW_ERROR_BUFFER) {
       setClaw(0);
-    } else if (claw.get_position() > UP_THRESH) {
+    } else if (claw.get_position() > UP_CLAW_THRESH) {
       setClaw(-40);
     } else {
-      setClaw(60);
+      setClaw(127);
     }
   }
 
