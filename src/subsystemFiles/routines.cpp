@@ -17,48 +17,32 @@ void leftWinPoint()
 
 void leftRush()
 {
-  straightTrap(14.5, 400);
-
-  clawAuton(390, 60);
-
-  straightTrap(-11, 200);
-
-  clawAuton(-390, 100);
-
-  straightTrap(-3.0, 200);
-
-  turnTrap(4.2);
-
-  liftAuton(1480, 80);
-
-  straightTrap(4.0, 600);
-
-  clawAuton(440, 120);
-
-  straightTrap(-3.0, 200);
+  straightTrap(16.5, 100);
+  clawAuton(-360, 100);
+  straightTrap(-14, 100);
 }
 
 void rightWinPoint()
 {
-  
+
   liftAuton(1800, 80);
   straightTrap(3.0, 400);
-  
+
   turnTrap(3.40);
-  
-  straightTrap(4.5, 400);
 
-  liftAuton(-400, 80);
-
-  straightTrap(-3.0, 400);
-
-  liftAuton(-1400, 80);
-
-  straightTrap(5.0, 400);
+  straightTrap(4.5, 1000);
 
   clawAuton(400, 100);
 
-  straightTrap(-8.0, 400);
+  straightTrap(-3.0, 400);
+
+  liftAuton(-1800, 80);
+
+  straightTrap(6.0, 1000);
+
+  clawAuton(-400, 100);
+
+  straightTrap(-6.0, 400);
 
 }
 
@@ -91,7 +75,7 @@ void rightRush()
 
   // clawAuton(-400, 120);
 
-  // straightTrap(6.5, 800); 
+  // straightTrap(6.5, 800);
 
   // clawAuton(400, 100);
 
@@ -100,39 +84,45 @@ void rightRush()
 }
 
 
-
+//supposed to be a 40 point routine for use in skills
 
 void skillsAuton()
 {
-  straightTrap(4.0, 600);
 
-  clawAuton(400, 100);
+  mogoAuton(-2200, 120);
+  straightTrap(-4.0, 200);
 
-  straightTrap(-4.0, 600);
+  mogoAuton(1700, 126); //previous was 1700
 
-  clawAuton(-400, 100);
+  straightTrap(3.6, 200);
 
-  straightTrap(-1.5, 200);
+  pros::delay(1000);
 
-  turnTrap(-4.0);
+  turnTrap(7.30);
 
-  straightTrap(14.5, 600);
+  pros::delay(1000);
 
-  clawAuton(400, 100);
+  //straightTrap(15, 200);
+
+  pros::delay(1000);
+
+
+  //clawAuton(-400, 100);
+
+  //liftAuton(1000, 100);
+
+  turnTrap(1.0);
+
+  straightTrap(16, 600);
+
+  pros::delay(1000);
+
+
+  straightTrap(24, 600);
 
 
 
-  liftAuton(400, 80);
 
-  clawAuton(40, 100);
 
-  liftAuton(400, 100);
 
-  clawAuton(40, 100);
-
-  liftAuton(800, 80);
 }
-
-
-
-

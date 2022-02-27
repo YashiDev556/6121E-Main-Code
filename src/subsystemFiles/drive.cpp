@@ -41,6 +41,8 @@ double rightDerivative = 0.0;
 double rightIntegral = 0.0;
 double rightPower = 0.0;
 
+pros::Imu imu_sensor(14);
+
 
 
 
@@ -405,59 +407,130 @@ void straightPID(double inches) {
 }
 
 
-void straightTrap(double inches, int accelConstant) {          
+void straightTrap(double inches, int accelConstant) {
 
   pros::lcd::set_text(1, "Trap Drive");
-  
+
   int direction = abs(inches) / inches; //either 1 or -1
   resetPIDVars(inches*TICKS_PER_INCH, inches*TICKS_PER_INCH);
 
-  int INTL_VEL = 80;
-  int MAX_VEL = 127;
+  int INTL_VEL = 20;
+  int MAX_VEL = 120; //used to be 127
   int TARGET_BUFFER = accelConstant; //num of units (each side) for acceleration and deceleration (the higher the value the slower the acceleration)
 
+  int minimumCorrectionVelocity = 0;
 
+  //Will plan to add a value to the left or right side depending on whether the angle degrees was positive or negative
 
+  double correction = imu_sensor.get_rotation()*100;
 
   while (fabs(avgDriveEncoderValue()) < TARGET_BUFFER && fabs(avgDriveEncoderValue()) <= fabs(rightTarget + leftTarget)/4) {
     int cv = -(INTL_VEL + (int)(fabs(avgDriveEncoderValue())*(MAX_VEL - INTL_VEL)/TARGET_BUFFER));
+    pros::lcd::set_text(1, "Rotation Degrees: " + std::to_string(imu_sensor.get_rotation()));
 
-    setDrive(cv * direction, cv * direction);
+    if(cv > minimumCorrectionVelocity)
+      correction = imu_sensor.get_rotation()*100;
+    else
+      correction = 0;
+
+    setDrive((cv + correction) * direction , (cv - correction) * direction);
+
     pros::delay(10);
   }
 
   while (fabs(avgDriveEncoderValue()) <= fabs(rightTarget + leftTarget)/2 - TARGET_BUFFER) {
     int cv = -MAX_VEL;
-    setDrive(cv * direction, cv * direction);
+    pros::lcd::set_text(1, "Rotation Degrees: " + std::to_string(imu_sensor.get_rotation()));
+
+    if(cv > minimumCorrectionVelocity)
+      correction = imu_sensor.get_rotation()*100;
+    else
+      correction = 0;
+    setDrive((cv + correction) * direction , (cv - correction) * direction);
+
     pros::delay(10);
   }
 
   while (fabs(avgDriveEncoderValue()) < fabs(rightTarget + leftTarget)/2) {
     double e = fabs(avgDriveEncoderValue()) - fabs(rightTarget + leftTarget)/2;
     int cv = (int)((e / TARGET_BUFFER) * (MAX_VEL - INTL_VEL));
-    setDrive(cv * direction, cv * direction);
+    pros::lcd::set_text(1, "Rotation Degrees: " + std::to_string(imu_sensor.get_rotation()));
+
+    if(cv > minimumCorrectionVelocity)
+      correction = imu_sensor.get_rotation()*100;
+    else
+      correction = 0;
+
+    setDrive((cv + correction) * direction , (cv - correction) * direction);
+
     pros::delay(10);
 
 
-    if(fabs(cv) <= 20)
+    if(fabs(cv) <= 10)
       break;
 
   }
 
-  pros::lcd::set_text(1, "Finished!");
 
-  
+
+
   pros::delay(BRAKE_TIME);
   setDrive(0, 0);
 
 }
 
 
+void angleCorrection() {
 
-void turnTrap(double inches) {          
+  while(fabs(imu_sensor.get_rotation()) > 1) {
+
+
+    setDrive(imu_sensor.get_rotation()*2, -imu_sensor.get_rotation()*2);
+    pros::lcd::set_text(1, "Rotation Degrees: " + std::to_string(imu_sensor.get_rotation()));
+    pros::delay(10);
+  }
+
+  setDrive(0, 0);
+}
+
+void setDegrees(double degrees) {
+
+    int direction = fabs(degrees) / degrees;
+
+    while(fabs(imu_sensor.get_rotation()) < fabs(degrees))
+    {
+      setDrive(-60, 60);
+      pros::delay(10);
+    }
+
+    pros::delay(100);
+
+    if(fabs(imu_sensor.get_rotation()) > fabs(degrees))
+    {
+      while(fabs(imu_sensor.get_rotation()) > fabs(degrees))
+      {
+        setDrive(30, -30);
+        pros::delay(10);
+      }
+    } else if(fabs(imu_sensor.get_rotation()) < fabs(degrees))
+    {
+      while(fabs(imu_sensor.get_rotation()) < fabs(degrees))
+      {
+        setDrive(-30, 30);
+        pros::delay(10);
+      }
+    }
+
+    setDrive(0, 0);
+
+  }
+
+
+
+void turnTrap(double inches) {
 
   pros::lcd::set_text(1, "Trap Drive");
-  
+
   int direction = abs(inches) / inches; //either 1 or -1
   resetPIDVars(inches*TICKS_PER_INCH, inches*TICKS_PER_INCH);
 
@@ -495,25 +568,8 @@ void turnTrap(double inches) {
 
   pros::lcd::set_text(1, "Finished!");
 
-  
+
   pros::delay(BRAKE_TIME);
   setDrive(0, 0);
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

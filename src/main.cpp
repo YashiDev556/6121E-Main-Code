@@ -57,15 +57,18 @@ void initialize() {
 
 	mogo.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
 
+	pros::Imu imu_sensor(14);
+
+	imu_sensor.reset();
+
+	pros::delay(2000);
+
+
 
 
 
 	//make sure to delete or comment out this "autonomous()" line during competition or else jank stuff might happen!
     //autonomous();
-	opcontrol();
-
-
-
 
 }
 
@@ -117,9 +120,24 @@ void autonomous() {
 	//leftWinPoint();
 	//leftRush();
 	//rightWinPoint();
-	rightRush();
+	//rightRush();
+
+	//setDegrees(90);
+
+	setBackClamp(true);
+
 
 	//skillsAuton();
+
+	// imu_sensor.reset();
+	//
+	// while (imu_sensor.is_calibrating()) {
+  //   pros::delay(10);
+	// }
+	//
+	// pros::lcd::set_text(1, "Rotation Degrees: " + std::to_string(imu_sensor.get_rotation()));
+	//setDegrees(90);
+
 }
 
 /**
@@ -157,6 +175,12 @@ void opcontrol() {
 		setLiftMotors();
 		//control claw
 		setClawMotors();
+
+		//control the pneumatics
+		backClampOP();
+
+		//intake
+		setIntakeMotors();
 
 
 		//add a delay in the code so that the motors are in sync with program

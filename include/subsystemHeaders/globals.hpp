@@ -12,7 +12,8 @@ extern pros::Motor driveRightFront;
 //mogo
 extern pros::Motor mogo;
 
-//intake
+
+extern pros::Motor intake;
 extern pros::Motor lift;
 
 //claw
@@ -24,3 +25,7 @@ extern  pros::Controller controller;
 
 
 //MISCELLANEOUS
+
+extern pros::Imu imu_sensor;
+
+#define clampPneumatics 'A'

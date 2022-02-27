@@ -16,5 +16,7 @@ pros::Motor lift(6, pros::E_MOTOR_GEARSET_36, false, pros::E_MOTOR_ENCODER_COUNT
 
 pros::Motor claw(11, pros::E_MOTOR_GEARSET_18, false, pros::E_MOTOR_ENCODER_COUNTS);
 
+pros::Motor intake(10, pros::E_MOTOR_GEARSET_18, false, pros::E_MOTOR_ENCODER_COUNTS);
+
 //CONTROLLERS
 pros::Controller controller(pros::E_CONTROLLER_MASTER);

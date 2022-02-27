@@ -36,4 +36,6 @@ void straightTrap(double inches, int accelConstant);
 
 void turnTrap(double inches);
 
+void angleCorrection();
 
+void setDegrees(double degrees);

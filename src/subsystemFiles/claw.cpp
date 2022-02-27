@@ -1,7 +1,7 @@
 #include "main.h"
 
 static const int UP_CLAW_THRESH = -30;
-static const int DOWN_CLAW_THRESH = -505;
+static const int DOWN_CLAW_THRESH = -490;
 static const int CLAW_ERROR_BUFFER = 20;
 
 static bool clampDown = false; //false for open
@@ -16,25 +16,10 @@ void setClaw(int power)
 
 void setClawMotors()
 {
-  controller.set_text(0, 1, "CLAWPOS: " + std::to_string(claw.get_position()));
+  //controller.set_text(0, 1, "CLAWPOS: " + std::to_string(claw.get_position()));
   pros::lcd::set_text(1, "CLAWPOS: " + std::to_string(claw.get_position()));
 
-  // int clawPower = 127 * (controller.get_digital(pros::E_CONTROLLER_DIGITAL_Y) - controller.get_digital(pros::E_CONTROLLER_DIGITAL_A));
-  // if (clawPower > 0) {
-  //   if (claw.get_position() < UP_CLAW_THRESH) {
-  //     setClaw(clawPower);
-  //   } else {
-  //     setClaw(-10);
-  //   }
-  // } else if (clawPower < 0) {
-  //   if (claw.get_position() > DOWN_CLAW_THRESH) {
-  //     setClaw(clawPower);
-  //   } else {
-  //     setClaw(10);
-  //   }
-  // } else {
-  //   setClaw(0);
-  // }
+
 
   int clawPower;
   if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_A) > 0) {

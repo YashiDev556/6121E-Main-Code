@@ -84,6 +84,7 @@ void opcontrol(void);
 #include "subsystemHeaders/intake.hpp"
 #include "subsystemHeaders/routines.hpp"
 #include "subsystemHeaders/claw.hpp"
+#include "subsystemHeaders/pneumatics.hpp"
 
 
 //#include <iostream>
